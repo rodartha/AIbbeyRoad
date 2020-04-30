@@ -93,6 +93,8 @@ def scrape():
 
         page = response['next_page']
 
+    print("Found {} songs".format(len(songs)))
+
     for song in songs:
         # get song_lyrics
         lyrics = genius.get_song_lyrics(url=song[1])

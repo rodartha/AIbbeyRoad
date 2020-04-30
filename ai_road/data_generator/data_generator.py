@@ -22,6 +22,7 @@ class GenerateData:
                 self.full_embeddings = self.full_embeddings + self.load_file(file_path)
 
         # Remove duplicate lines from the data:
+        # NOTE: may need to remove duplicates where the line is different but content is the same
         self.full_embeddings = list(set(self.full_embeddings))
         print("Finished loading all the embeddings")
 
@@ -32,12 +33,17 @@ class GenerateData:
         with open(file_path, 'r') as text_file:
             full_text = text_file.readlines()
 
-            for i in range(len(full_text)):
+            i = 0
+            while i < len(full_text):
                 # Remove lines that are just indentation
                 if full_text[i][0] == '\n':
                     full_text.pop(i)
+                    if i >= len(full_text) - 1:
+                        break
+                    continue
 
                 file_embeddings = file_embeddings + self.generate_line(i, full_text[i])
+                i += 1
 
         print("Finished Loading File")
 
@@ -57,9 +63,6 @@ class GenerateData:
             if i == 0:
                 embedding = prefix
                 label = line[i]
-            elif i == len(line) - 1:
-                embedding = prefix + line
-                label = '\n'
             else:
                 embedding = prefix + line[0:i]
                 label = line[i]
@@ -73,7 +76,13 @@ class GenerateData:
         self.save_embeddings()
 
 
+"""
 def test():
-    pass
+    gd = GenerateData()
+    json_object = gd.load_file(gd.directory + 'all_my_loving.txt')
+
+    with open('../../data/structured/embeddings_test.json', 'w') as embedding_file:
+        json.dump(json_object, embedding_file)
 
 test()
+"""
