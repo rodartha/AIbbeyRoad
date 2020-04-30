@@ -68,11 +68,13 @@ class Genius_API():
         lyrics = re.sub('(\[.*?\})*', '', lyrics)
         lyrics.strip()
 
-        return lyrics
+        return lyrics.lower()
 
 
 def scrape():
     genius = Genius_API()
+
+    song_lengths = []
 
     songs = []
     page = 1
@@ -91,9 +93,16 @@ def scrape():
         lyrics = genius.get_song_lyrics(url=song[1])
         # save to .txt file
         if lyrics:
-            lyric_file = open("../data/{}.txt".format(song[0]), "w")
-            lyric_file.write(lyrics)
-            lyric_file.close()
+            with open("../data/unstructured/{}.txt".format(song[0]), "w") as lyric_file:
+                lyric_file.write(lyrics)
+                lyric_file.close()
+
+            # Save length of song
+            song_lengths.append(len(lyrics.split()))
+
+    with open('../data/meta/song_lengths.csv', "w") as csv_file:
+        writer = csv.writer(csv_file, lineterminator='\n')
+        writer.writerows(song_lengths)
 
 
 def clean_title(title):
@@ -107,6 +116,14 @@ def clean_title(title):
     title = title.replace('\"', '')
     title = title.replace('/', '')
     title = title.replace('\\', '')
+    title = title.replace(',', '')
+    title = title.replace('-', '')
+    title = title.replace('*', '')
+    title = title.replace('{', '')
+    title = title.replace('}', '')
+    title = title.replace('.', '')
+    title = title.replace('!', '')
+    title = title.replace('#', '')
     title = re.sub('_{2}', '_', title)
 
     return title
