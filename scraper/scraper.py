@@ -102,6 +102,7 @@ def scrape():
 
             # Save length of song in lines
             num_lines.append(len(lyrics.split('\n')))
+    print("Done Writing Song Lyrics")
 
     with open('../data/meta/song_lengths.csv', "w") as csv_file:
         writer = csv.writer(csv_file, lineterminator='\n')
@@ -110,6 +111,8 @@ def scrape():
     with open('../data/meta/line_lengths.csv', 'w') as csv_file:
         writer = csv.writer(csv_file, lineterminator='\n')
         writer.writerows(num_lines)
+
+    print("Done Writing Meta Data")
 
 
 def clean_title(title):

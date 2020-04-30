@@ -35,6 +35,8 @@ class GenerateData:
 
                 file_embeddings = file_embeddings + self.generate_line(i, full_text[i])
 
+        print("Finished Loading File")
+
         return file_embeddings
 
 
