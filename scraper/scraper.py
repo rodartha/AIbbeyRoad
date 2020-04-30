@@ -133,7 +133,7 @@ def scrape():
         writer = csv.writer(csv_file, delimiter=',')
         writer.writerow(num_lines)
 
-    with open('../data/meta/longest_line.csv'. 'w') as csv_file:
+    with open('../data/meta/longest_line.csv', 'w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
         writer.writerow(max_line_length)
 
