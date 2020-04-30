@@ -1,6 +1,8 @@
 import os
 import json
 
+# NOTE: still need to tensorize all of this data
+
 class GenerateData:
     def __init__(self):
         self.directory = '../../data/unstructured/'
@@ -27,6 +29,10 @@ class GenerateData:
             full_text = text_file.readlines()
 
             for i in range(len(full_text)):
+                # Remove lines that are just indentation
+                if full_text[i][0] == '\n':
+                    full_text.pop(i)
+
                 file_embeddings = file_embeddings + self.generate_line(i, full_text[i])
 
         return file_embeddings

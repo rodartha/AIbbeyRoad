@@ -98,7 +98,7 @@ def scrape():
                 lyric_file.close()
 
             # Save length of song in words
-            song_lengths.append(len(lyricsreplace('\n', '').split()))
+            song_lengths.append(len(lyrics.replace('\n', '').split()))
 
             # Save length of song in lines
             num_lines.append(len(lyrics.split('\n')))
