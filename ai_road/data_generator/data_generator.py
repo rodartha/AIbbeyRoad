@@ -1,6 +1,7 @@
 import os
 import json
 from tqdm import tqdm
+import numpy as np
 
 # NOTE: still need to tensorize all of this data
 
@@ -87,6 +88,8 @@ class TensorizeEmbeddings():
         # Because the longest line length is 844 and 1024 is the smallest number greater than 844 that is divisible perfectly by 2
         self.MAX_PADDING_LENGTH = 1024
 
+        self.char_to_int = {}
+
 
     def load_embeddings(self):
         with open('../../data/structured/embeddings.json') as embedding_file:
@@ -98,6 +101,18 @@ class TensorizeEmbeddings():
 
 
     def tensorize_labels(self):
+        pass
+
+
+    def chars_to_ints(self):
+        pass
+
+
+    def line_to_tensor(self, line):
+        return [self.char_to_int[char] for char in line]
+
+
+    def run(self):
         pass
 
 
