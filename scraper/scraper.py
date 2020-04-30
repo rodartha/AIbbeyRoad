@@ -84,7 +84,12 @@ def scrape():
             if song['primary_artist']['id'] != genius.BEATLES_ID:
                 continue
 
-            songs.append([clean_title(song['title']), song['url']])
+            cleaned_title = clean_title(song['title'])
+
+            # remove the beatles' movie scripts
+            if "script" in cleaned_title:
+                continue
+            songs.append([cleaned_title, song['url']])
 
         page = response['next_page']
 
@@ -93,6 +98,10 @@ def scrape():
         lyrics = genius.get_song_lyrics(url=song[1])
         # save to .txt file
         if lyrics:
+            # Skip this file if it contains this
+            if "lyrics for this song have yet to be released. please check back once the song has been released." in lyrics:
+                continue
+
             with open("../data/unstructured/{}.txt".format(song[0]), "w") as lyric_file:
                 lyric_file.write(lyrics)
                 lyric_file.close()
@@ -105,12 +114,12 @@ def scrape():
     print("Done Writing Song Lyrics")
 
     with open('../data/meta/song_lengths.csv', "w") as csv_file:
-        writer = csv.writer(csv_file, lineterminator='\n')
-        writer.writerows(song_lengths)
+        writer = csv.writer(csv_file, delimiter=',')
+        writer.writerow(song_lengths)
 
     with open('../data/meta/line_lengths.csv', 'w') as csv_file:
-        writer = csv.writer(csv_file, lineterminator='\n')
-        writer.writerows(num_lines)
+        writer = csv.writer(csv_file, delimiter=',')
+        writer.writerow(num_lines)
 
     print("Done Writing Meta Data")
 
@@ -135,6 +144,8 @@ def clean_title(title):
     title = title.replace('!', '')
     title = title.replace('#', '')
     title = re.sub('_{2}', '_', title)
+
+    title = title.lower()
 
     return title
 

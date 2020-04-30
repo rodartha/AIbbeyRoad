@@ -21,6 +21,10 @@ class GenerateData:
                 file_path = os.path.join(self.directory, file)
                 self.full_embeddings = self.full_embeddings + self.load_file(file_path)
 
+        # Remove duplicate lines from the data:
+        self.full_embeddings = list(set(self.full_embeddings))
+        print("Finished loading all the embeddings")
+
 
     def load_file(self, file_path):
         file_embeddings = []
@@ -67,3 +71,9 @@ class GenerateData:
     def run(self):
         self.load_all_lyrics()
         self.save_embeddings()
+
+
+def test():
+    pass
+
+test()
