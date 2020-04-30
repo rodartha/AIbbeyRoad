@@ -6,6 +6,8 @@ import time
 from secret import ACCESS_TOKEN
 import re
 
+# NOTE: if this isnt enough data, can also grab all of the solo songs by beatles members
+
 
 class Genius_API():
 
@@ -135,7 +137,7 @@ def scrape():
 
     with open('../data/meta/longest_line.csv', 'w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
-        writer.writerow(max_line_length)
+        writer.writerow([max_line_length])
 
     print("Done Writing Meta Data")
 

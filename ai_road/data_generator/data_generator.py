@@ -76,6 +76,31 @@ class GenerateData:
         self.save_embeddings()
 
 
+class TensorizeEmbeddings():
+    def __init__(self):
+        self.full_embeddings = []
+        self.load_embeddings()
+
+        self.training_data = [row[0] for row in self.full_embeddings]
+        self.training_labels = [row[1] for row in self.full_embeddings]
+
+        # Because the longest line length is 844 and 1024 is the smallest number greater than 844 that is divisible perfectly by 2
+        self.MAX_PADDING_LENGTH = 1024
+
+
+    def load_embeddings(self):
+        with open('../../data/structured/embeddings.json') as embedding_file:
+            self.full_embeddings = json.load(embedding_file)
+
+
+    def tensorize_data(self):
+        pass
+
+
+    def tensorize_labels(self):
+        pass
+
+
 
 gd = GenerateData()
 gd.run()
