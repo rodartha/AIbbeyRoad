@@ -95,6 +95,8 @@ def scrape():
 
     print("Found {} songs".format(len(songs)))
 
+    max_line_length = 0
+
     for song in songs:
         # get song_lyrics
         lyrics = genius.get_song_lyrics(url=song[1])
@@ -113,6 +115,14 @@ def scrape():
 
             # Save length of song in lines
             num_lines.append(len(lyrics.split('\n')))
+
+            lines = lyrics.split('\n')
+            for line in lines:
+                # +5 because of the newline character and the possible 3 digit line encoding
+                if len(line) + 5 > max_line_length:
+                    max_line_length = len(line) + 5
+
+
     print("Done Writing Song Lyrics")
 
     with open('../data/meta/song_lengths.csv', "w") as csv_file:
@@ -122,6 +132,10 @@ def scrape():
     with open('../data/meta/line_lengths.csv', 'w') as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
         writer.writerow(num_lines)
+
+    with open('../data/meta/longest_line.csv'. 'w') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',')
+        writer.writerow(max_line_length)
 
     print("Done Writing Meta Data")
 

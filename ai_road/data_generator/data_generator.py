@@ -12,6 +12,7 @@ class GenerateData:
 
 
     def save_embeddings(self):
+        print("Total unique embeddings: {}".format(len(self.full_embeddings)))
         with open('../../data/structured/embeddings.json', 'w') as embedding_file:
             json.dump(self.full_embeddings, embedding_file)
 
@@ -74,19 +75,6 @@ class GenerateData:
         self.load_all_lyrics()
         self.save_embeddings()
 
-
-"""
-def test():
-    gd = GenerateData()
-    json_object = gd.load_file(gd.directory + 'all_my_loving.txt')
-
-    json_object = list(set(json_object))
-
-    with open('../../data/structured/embeddings_test.json', 'w') as embedding_file:
-        json.dump(json_object, embedding_file)
-
-test()
-"""
 
 
 gd = GenerateData()
