@@ -15,6 +15,7 @@ setup(
         'bs4',
         'pandas',
         'selenium',
-        'flask'
+        'flask',
+        'rauth'
     ],
 )
