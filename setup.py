@@ -13,6 +13,8 @@ setup(
         'torch',
         'tqdm',
         'bs4',
-        'pandas'
+        'pandas',
+        'selenium',
+        'flask'
     ],
 )
