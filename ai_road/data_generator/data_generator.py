@@ -1,5 +1,6 @@
 import os
 import json
+from tqdm import tqdm
 
 # NOTE: still need to tensorize all of this data
 
@@ -16,7 +17,7 @@ class GenerateData:
 
 
     def load_all_lyrics(self):
-        for file in os.listdir(self.directory):
+        for file in tqdm(os.listdir(self.directory)):
             if file.endswith('.txt'):
                 file_path = os.path.join(self.directory, file)
                 self.full_embeddings = self.full_embeddings + self.load_file(file_path)
@@ -45,8 +46,6 @@ class GenerateData:
                 file_embeddings = file_embeddings + self.generate_line(i, full_text[i])
                 i += 1
 
-        print("Finished Loading File")
-
         return file_embeddings
 
 
@@ -66,7 +65,7 @@ class GenerateData:
             else:
                 embedding = prefix + line[0:i]
                 label = line[i]
-            line_embeddings.append([embedding, label])
+            line_embeddings.append((embedding, label))
 
         return line_embeddings
 
@@ -81,8 +80,15 @@ def test():
     gd = GenerateData()
     json_object = gd.load_file(gd.directory + 'all_my_loving.txt')
 
+    json_object = list(set(json_object))
+
     with open('../../data/structured/embeddings_test.json', 'w') as embedding_file:
         json.dump(json_object, embedding_file)
 
 test()
 """
+
+
+gd = GenerateData()
+gd.run()
+
