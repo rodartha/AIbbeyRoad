@@ -1,8 +1,6 @@
 from bs4 import BeautifulSoup as bs
-import selenium
 import csv
 import os
-from rauth import OAuth1Service
 import requests
 import time
 from secret import ACCESS_TOKEN
