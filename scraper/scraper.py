@@ -63,6 +63,9 @@ class Genius_API():
 
     def clean_lyrics(self, lyrics):
         lyrics = re.sub('(\[.*?\])*', '', lyrics)
+        lyrics = re.sub('(\{.*?\})*', '', lyrics)
+        lyrics = re.sub('(\{.*?\])*', '', lyrics)
+        lyrics = re.sub('(\[.*?\})*', '', lyrics)
         lyrics.strip()
 
         return lyrics
@@ -76,6 +79,9 @@ def scrape():
     while page:
         response = genius.get_beatles_songs(page=page)
         for song in response['songs']:
+            if song['primary_artist']['id'] != genius.BEATLES_ID:
+                continue
+
             songs.append([clean_title(song['title']), song['url']])
 
         page = response['next_page']
@@ -97,6 +103,11 @@ def clean_title(title):
     title = title.replace('(', '')
     title = title.replace(')', '')
     title = title.replace('’', '')
+    title = title.replace('+', '')
+    title = title.replace('\"', '')
+    title = title.replace('/', '')
+    title = title.replace('\\', '')
+    title = re.sub('_{2}', '_', title)
 
     return title
 
