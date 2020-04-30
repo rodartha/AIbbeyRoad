@@ -45,23 +45,12 @@ class Genius_API():
 def scrape():
     genius = Genius_API()
 
-    """
-    response = genius.get_beatles_songs()
-
-    #print(response['songs'][0])
-
-    print(response['next_page'])
-    """
     songs = []
     page = 1
     while page:
         response = genius.get_beatles_songs(page=page)
         for song in response['songs']:
-            title = song['title'].replace(' ', '_')
-            title = title.replace("’", '')
-            title = title.replace('[', '')
-            title = title.replace(']', '')
-            songs.append([title, song['id']])
+            songs.append([clean_title(song['title']), song['id']])
 
         page = response['next_page']
 
@@ -73,5 +62,13 @@ def scrape():
         lyric_file.write(lyrics)
         lyric_file.close()
 
+
+def clean_title(title):
+    title = title.replace(' ', '_')
+    title = title.replace("’", '')
+    title = title.replace('[', '')
+    title = title.replace(']', '')
+
+    return title
 
 scrape()
