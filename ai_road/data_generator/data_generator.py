@@ -135,10 +135,14 @@ class TensorizeEmbeddings():
             json.dump(chars_sorted, freq_file)
 
         # Generate mapping from characters to indexes
-        index  = 1
+        index = 1
         for char in chars_sorted:
             self.char_to_int[char] = index
             index += 1
+
+        with open('../../data/meta/num_unique_characters.csv', 'w') as csv_file:
+            writer = csv.writer(csv_file, delimiter=',')
+            writer.writerow([index])
 
 
     def run(self):
