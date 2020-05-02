@@ -89,6 +89,7 @@ class TensorizeEmbeddings():
         self.MAX_PADDING_LENGTH = 1024
 
         self.char_to_int = {}
+        self.chars_to_ints()
 
 
     def load_embeddings(self):
@@ -97,19 +98,47 @@ class TensorizeEmbeddings():
 
 
     def tensorize_data(self):
-        pass
+        tensorized_data = []
+        for datum in self.training_data:
+            tensor = []
+            for char in datum:
+                tensor.append(self.char_to_int[char])
+
+            # NOTE: need to decide whether to pad to the front or back of the tensor
+            tensor += [0] * (self.MAX_PADDING_LENGTH - len(tensor))
+            tensorized_data.append(tensor)
+
+        return tensorized_data
 
 
     def tensorize_labels(self):
-        pass
+        tensorized_labels = []
+        for label in self.training_labels:
+            tensorized_labels.append(self.char_to_int[label[0]])
+
+        return tensorized_labels
 
 
     def chars_to_ints(self):
-        pass
+        num_of_chars = {}
+        for datum in self.training_data:
+            for char in datum:
+                if char in num_of_chars.keys():
+                    num_of_chars[char] += 1
+                else:
+                    num_of_chars[char] = 1
 
+        chars_sorted = sorted(num_of_chars.items(), key=operator.itemgetter(1), reverse=True)
 
-    def line_to_tensor(self, line):
-        return [self.char_to_int[char] for char in line]
+        # Save them
+        with open('../../data/meta/character_frequency.json', 'w') as freq_file:
+            json.dump(chars_sorted, freq_file)
+
+        # Generate mapping from characters to indexes
+        index  = 1
+        for char in chars_sorted:
+            self.char_to_int[char] = index
+            index += 1
 
 
     def run(self):
