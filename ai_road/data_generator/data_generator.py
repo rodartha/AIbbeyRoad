@@ -91,6 +91,9 @@ class TensorizeEmbeddings():
         self.char_to_int = {}
         self.chars_to_ints()
 
+        self.tensorized_training_data = []
+        self.tensorized_labels = []
+
 
     def load_embeddings(self):
         with open('../../data/structured/embeddings.json') as embedding_file:
@@ -98,7 +101,6 @@ class TensorizeEmbeddings():
 
 
     def tensorize_data(self):
-        tensorized_data = []
         for datum in self.training_data:
             tensor = []
             for char in datum:
@@ -106,17 +108,12 @@ class TensorizeEmbeddings():
 
             # NOTE: need to decide whether to pad to the front or back of the tensor
             tensor += [0] * (self.MAX_PADDING_LENGTH - len(tensor))
-            tensorized_data.append(tensor)
-
-        return tensorized_data
+            self.tensorized_training_data.append(tensor)
 
 
     def tensorize_labels(self):
-        tensorized_labels = []
         for label in self.training_labels:
-            tensorized_labels.append(self.char_to_int[label[0]])
-
-        return tensorized_labels
+            self.tensorized_labels.append(self.char_to_int[label[0]])
 
 
     def chars_to_ints(self):
@@ -143,6 +140,16 @@ class TensorizeEmbeddings():
         with open('../../data/meta/num_unique_characters.csv', 'w') as csv_file:
             writer = csv.writer(csv_file, delimiter=',')
             writer.writerow([index])
+
+
+    def save_tensorized_training_data(self):
+        with open('../../data/structured/training_data.json', 'w') as training_file:
+            json.dump(self.tensorized_training_dataed, training_file)
+
+
+    def save_tensorized_label_data(self):
+        with open('../../data/structured/training_labels.json', 'w') as labels_file:
+            json.dump(self.tensorized_labels, labels_file)
 
 
     def run(self):
